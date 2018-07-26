@@ -1,0 +1,4 @@
+.gitignore
+.vscode/
+todos.db
+.stack-work/
