@@ -26,6 +26,9 @@ this is a simple *TODO-App* demonstrating:
 - run `make docker-install` to run the service detached (background)
 - run `make docker-clean` to remove the service and the docker-volume
 
+once the application runs you should be able to browse to `http:\\localhost:8070`
+and use the *todo-app*
+
 ### local using stack
 
 run `make deploy` to deploy the application to `./dist`
