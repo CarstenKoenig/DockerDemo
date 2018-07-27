@@ -6,14 +6,17 @@ services:
     container_name: todo-nginx
     restart: unless-stopped
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "8080:80"
+      - "8070:80"
     networks:
       - todo-network
+    depends_on:
+      - app
+      - db
 
   db:
-    build: ./postgres
+    build: ./docker/postgres
     container_name: todo-db
     restart: unless-stopped
     volumes:
@@ -24,7 +27,9 @@ services:
       - todo-network
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker/app/dockerfile
     container_name: todo-app
     restart: unless-stopped
     command: "/app/TodoServer-exe /app/static"
@@ -38,6 +43,8 @@ services:
       DB_CONSTR: "dbname='Todos'"
     networks:
       - todo-network
+    depends_on:
+      - db
 
 volumes:
   data:

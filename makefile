@@ -21,3 +21,20 @@ clean:
 	$(MAKE) -C client/Elm clean
 	$(MAKE) -C server/Haskell clean
 	rm -rf ./dist
+
+.PHONY: docker-build
+docker-build:
+	docker-compose -f ./docker/docker-compose.yml --project-directory . -p todo build --force-rm
+
+.PHONY: docker-run
+docker-run:
+	docker-compose -f ./docker/docker-compose.yml --project-directory . -p todo up
+
+.PHONY: docker-install
+docker-install:
+	docker-compose -f ./docker/docker-compose.yml --project-directory . -p todo up -d
+
+.PHONY: docker-clean
+docker-clean:
+	docker-compose -f ./docker/docker-compose.yml --project-directory . -p todo rm -s -f -v
+	docker volume rm todo_data
