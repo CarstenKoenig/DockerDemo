@@ -7,11 +7,12 @@ WORKDIR $BUILD
 RUN elm make --yes src/Main.elm --output ./dist/todo.js
 
 
-FROM wiegand/stack-build:lts-11.13 as haskellBuilder
-ENV BUILD=/app
-RUN mkdir -p $BUILD
-COPY ./server/Haskell $BUILD
-WORKDIR $BUILD
+FROM fpco/stack-build:lts-12 as haskellBuilder
+RUN stack setup
+RUN stack update && stack upgrade
+RUN stack install lens servant servant-server aeson mtl servant-websockets stm bytestring text
+WORKDIR /app
+COPY ./server/Haskell .
 RUN make deploy
 
 
